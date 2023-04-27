@@ -29,3 +29,32 @@ def test_create_object(my_object):
     assert my_object.total_price == 0
     assert len(Item.all) != 0
     assert Item.pay_rate == 1.0
+
+
+def test_name(my_object):
+    my_object.name = 'Телефон'
+    assert my_object.name == 'Телефон'
+
+
+def test_value_error_name(my_object):
+    with pytest.raises(ValueError):
+        my_object.name = 'Телефонфонфон'
+
+
+def test_instantiate_from_csv():
+    Item.instantiate_from_csv()
+    assert len(Item.all) == 5
+    item1 = Item.all[0]
+    assert item1.name == 'Смартфон'
+
+
+def test_string_to_number():
+    assert Item.string_to_number('5') == 5
+    assert Item.string_to_number('5.0') == 5
+    assert Item.string_to_number('5.5') == 5
+
+
+def test_repr_str_item():
+    item1 = Item("Смартфон", 10000, 20)
+    assert repr(item1) == "Item('Смартфон', 10000, 20)"
+    assert str(item1) == 'Смартфон'
