@@ -34,8 +34,11 @@ def test_create_object(my_object):
 def test_name(my_object):
     my_object.name = 'Телефон'
     assert my_object.name == 'Телефон'
-    my_object.name = 'Телефонфонфон'
-    assert my_object.name == 'Телефон'
+
+
+def test_value_error_name(my_object):
+    with pytest.raises(ValueError):
+        my_object.name = 'Телефонфонфон'
 
 
 def test_instantiate_from_csv():
@@ -49,3 +52,9 @@ def test_string_to_number():
     assert Item.string_to_number('5') == 5
     assert Item.string_to_number('5.0') == 5
     assert Item.string_to_number('5.5') == 5
+
+
+def test_repr_str_item():
+    item1 = Item("Смартфон", 10000, 20)
+    assert repr(item1) == "Item('Смартфон', 10000, 20)"
+    assert str(item1) == 'Смартфон'
