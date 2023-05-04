@@ -72,3 +72,11 @@ class Item:
             return int(int_number)
         else:
             return int(number)
+
+    def __add__(self, other):
+        if isinstance(other, self.__class__):
+            return self.quantity + other.quantity
+        else:
+            print("Объект не является классом")
+            raise Exception
+
