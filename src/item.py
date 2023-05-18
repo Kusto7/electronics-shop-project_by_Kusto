@@ -1,5 +1,6 @@
 import csv
 
+from src.InstantiateCSVError import InstantiateCSVError
 from src.settings import DATA_PATH
 
 
@@ -9,6 +10,7 @@ class Item:
     """
     pay_rate = 1.0
     all = []
+    file_csv_cls_path = DATA_PATH
 
     def __init__(self, name: str, price: float, quantity: int) -> None:
         """
@@ -60,11 +62,21 @@ class Item:
 
     @classmethod
     def instantiate_from_csv(cls):
-        with open(DATA_PATH, newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            Item.all.clear()
-            for item in reader:
-                cls(item['name'], item['price'], item['quantity'])
+        try:
+            with open(Item.file_csv_cls_path, newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                Item.all.clear()
+                correct_colons = ['name', 'price', 'quantity']
+                if reader.fieldnames == correct_colons:
+                    for item in reader:
+                        cls(item['name'], item['price'], item['quantity'])
+                else:
+                    raise InstantiateCSVError
+        except InstantiateCSVError:
+            print('Файл item.csv поврежден')
+
+        except FileNotFoundError:
+            print("Отсутствует файл item.csv")
 
     @staticmethod
     def string_to_number(number):
@@ -80,4 +92,3 @@ class Item:
         else:
             print("Объект не является классом")
             raise Exception
-

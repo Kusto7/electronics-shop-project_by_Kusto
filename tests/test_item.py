@@ -49,6 +49,20 @@ def test_instantiate_from_csv():
     assert item1.name == 'Смартфон'
 
 
+def test_test_instantiate_from_csv_file_found(capsys):
+    Item.file_csv_cls_path = "items.csv"
+    Item.instantiate_from_csv()
+    captured = capsys.readouterr()
+    assert captured.out == "Отсутствует файл item.csv\n"
+
+
+def test_item_corrupted(capsys):
+    Item.file_csv_cls_path = '../homework-2/items_corrupted.csv'
+    Item.instantiate_from_csv()
+    captured = capsys.readouterr()
+    assert captured.out == "Файл item.csv поврежден\n"
+
+
 def test_string_to_number():
     assert Item.string_to_number('5') == 5
     assert Item.string_to_number('5.0') == 5
